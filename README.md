@@ -21,10 +21,10 @@ This project demonstrates forced alignment using Wav2Vec2 for aligning phoneme s
 
 ## Project Structure
 ```plaintext
-.
 ├── aligner.py          # Core alignment logic
 ├── dataloader.py       # Dataset handling
 ├── main.py             # Main script
+```plaintext
 
 
 **## Dataset Format**
