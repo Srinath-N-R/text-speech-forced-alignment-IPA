@@ -11,3 +11,4 @@ wandb
 jiwer
 mpi4py
 deepspeed
+sounddevice
