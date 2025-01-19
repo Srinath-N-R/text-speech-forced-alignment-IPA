@@ -9,6 +9,7 @@ This project demonstrates forced alignment using Wav2Vec2 for aligning phoneme s
 - **Batch Processing**: Efficient forced alignment for multiple audio files.
 - **Time-Aligned Segments**: Outputs alignment results as JSON files.
 - **Dataset Flexibility**: Supports datasets with `.wav` audio files and `.txt` phoneme transcriptions in IPA format.
+- **Visualization**: Includes tools for visualizing alignment results.
 
 ---
 
@@ -43,6 +44,11 @@ This project demonstrates forced alignment using Wav2Vec2 for aligning phoneme s
    python main.py --config config.yaml
    ```
 
+3. Visualize a single piece of data using the `visualize_data.py` script:
+   ```bash
+   python visualize_data.py
+   ```
+
 ---
 
 ## Project Structure
@@ -52,6 +58,8 @@ This project demonstrates forced alignment using Wav2Vec2 for aligning phoneme s
 ├── aligner.py          # Core alignment logic
 ├── dataloader.py       # Dataset handling and preprocessing
 ├── main.py             # Main script to run the alignment process
+├── plot_utils.py       # Utility functions for plotting and visualization
+├── visualize_data.py   # Script for visualizing alignment results
 ├── requirements.txt    # Project dependencies
 └── dataset/            # Input dataset folder (user-provided)
 ```
@@ -84,6 +92,12 @@ Run the alignment process with:
 
 ```bash
 python main.py
+```
+
+Visualize a single piece of data with:
+
+```bash
+python visualize_data.py
 ```
 
 ---
