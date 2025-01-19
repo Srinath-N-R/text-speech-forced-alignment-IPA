@@ -1,41 +1,57 @@
-# Forced Alignment with Wav2Vec2 and Phonemes
+Forced Alignment with Wav2Vec2 and Phonemes
 
-This project demonstrates forced alignment using Wav2Vec2 for aligning phoneme sequences to audio data.
+This project demonstrates forced alignment using Wav2Vec2 for aligning phoneme sequences to audio data. It is designed for researchers, linguists, and developers who work with speech processing and phoneme alignment.
 
-## Features
-- Batch processing for forced alignment.
-- Outputs time-aligned segments in JSON format.
-- Fully configurable via `config.yaml`.
-- Support for datasets with `.wav` and `.txt` phoneme files.
+Features
 
-## Setup
-1. Install dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
+Batch Processing: Efficient forced alignment for multiple audio files.
 
-2. Run the script:
-    ```bash
-    python main.py --config config.yaml
-    ```
+Time-Aligned Segments: Outputs alignment results as JSON files.
 
-## Project Structure
-```plaintext
-├── aligner.py          # Core alignment logic
-├── dataloader.py       # Dataset handling
-├── main.py             # Main script
-```
+Dataset Flexibility: Supports datasets with .wav audio files and .txt phoneme transcriptions in IPA format.
 
-**## Dataset Format**
-wav/: Audio files in .wav format.
-phonemized/: Phoneme transcriptions in .txt format.
+Getting Started
+
+Installation
+
+Clone this repository:
+
+git clone https://github.com/yourusername/forced-alignment.git
+cd forced-alignment
+
+Install required dependencies:
+
+pip install -r requirements.txt
+
+Usage
+
+Place your dataset in the required structure:
 
 dataset/
-├── wav/
-├── phonemized/
+├── wav/            # Audio files (.wav)
+├── phonemized/     # Phoneme files (.txt)
 
-**Output**
-Aligned segments are saved as JSON in the segments/ folder.
 
-**Example Command**
+Run the alignment script:
+
 python main.py --config config.yaml
+
+Project Structure
+
+.
+├── aligner.py          # Core alignment logic
+├── dataloader.py       # Dataset handling and preprocessing
+├── main.py             # Main script to run the alignment process
+├── config.yaml         # Configuration file
+├── requirements.txt    # Project dependencies
+
+
+Output
+
+Aligned segments are saved in JSON format under the specified output folder (segments/ by default). Each JSON file contains the alignment results for its corresponding audio file.
+
+Example Command
+
+Run the alignment process with:
+
+python main.py
