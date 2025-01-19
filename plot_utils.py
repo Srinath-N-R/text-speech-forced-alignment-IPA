@@ -3,13 +3,19 @@ import sounddevice as sd
 
 
 def plot_emission(emission):
-    fig, ax = plt.subplots(emission)
-    img = ax.imshow(emission.T)
+    """
+    Plots the emission probabilities as a heatmap.
+    Parameters:
+        emission (torch.Tensor): Emission matrix of shape [time_steps, labels].
+    """
+    fig, ax = plt.subplots()
+    img = ax.imshow(emission.T, origin='lower', aspect='auto', interpolation='nearest')
     ax.set_title("Frame-wise class probability")
     ax.set_xlabel("Time")
     ax.set_ylabel("Labels")
     fig.colorbar(img, ax=ax, shrink=0.6, location="bottom")
     fig.tight_layout()
+
 
 
 def plot_trellis(trellis):
@@ -73,10 +79,19 @@ def plot_trellis_with_segments(trellis, segments, transcript, path):
 
 
 def plot_alignments(trellis, segments, word_segments, waveform, sample_rate):
+    """
+    Visualizes trellis with path and corresponding waveform segments.
+    Parameters:
+        trellis (torch.Tensor): Alignment trellis.
+        segments (list): List of aligned segments.
+        word_segments (list): List of word segment dictionaries with keys 'label', 'start', 'end', 'score'.
+        waveform (torch.Tensor): Waveform tensor.
+        sample_rate (int): Sampling rate of the audio.
+    """
     trellis_with_path = trellis.clone()
     for i, seg in enumerate(segments):
         if seg.label != "|":
-            trellis_with_path[seg.start : seg.end, i] = float("nan")
+            trellis_with_path[seg.start: seg.end, i] = float("nan")
 
     fig, [ax1, ax2] = plt.subplots(2, 1)
 
@@ -86,7 +101,8 @@ def plot_alignments(trellis, segments, word_segments, waveform, sample_rate):
     ax1.set_yticks([])
 
     for word in word_segments:
-        ax1.axvspan(word.start - 0.5, word.end - 0.5, edgecolor="white", facecolor="none")
+        x0, x1 = word['start'] - 0.5, word['end'] - 0.5
+        ax1.axvspan(x0, x1, edgecolor="white", facecolor="none")
 
     for i, seg in enumerate(segments):
         if seg.label != "|":
@@ -95,12 +111,12 @@ def plot_alignments(trellis, segments, word_segments, waveform, sample_rate):
 
     # The original waveform
     ratio = waveform.size(0) / sample_rate / trellis.size(0)
-    ax2.specgram(waveform, Fs=sample_rate)
+    ax2.specgram(waveform.numpy(), Fs=sample_rate)
     for word in word_segments:
-        x0 = ratio * word.start
-        x1 = ratio * word.end
+        x0 = ratio * word['start']
+        x1 = ratio * word['end']
         ax2.axvspan(x0, x1, facecolor="none", edgecolor="white", hatch="/")
-        ax2.annotate(f"{word.score:.2f}", (x0, sample_rate * 0.51), annotation_clip=False)
+        ax2.annotate(f"{word['score']:.2f}", (x0, sample_rate * 0.51), annotation_clip=False)
 
     for seg in segments:
         if seg.label != "|":
@@ -110,13 +126,33 @@ def plot_alignments(trellis, segments, word_segments, waveform, sample_rate):
     fig.tight_layout()
 
 
-
 def display_segment(i, waveform, trellis, word_segments, sample_rate):
+    """
+    Play a specific segment of the waveform based on alignment.
+
+    Parameters:
+        i (int): Index of the word segment to display.
+        waveform (torch.Tensor): Audio waveform as a PyTorch tensor.
+        trellis (torch.Tensor): Trellis used for alignment.
+        word_segments (list): List of word segments with start, end, label, and score as attributes.
+        sample_rate (int): Sampling rate of the audio.
+
+    Returns:
+        None
+    """
     ratio = waveform.size(1) / trellis.size(0)
     word = word_segments[i]
-    x0 = int(ratio * word.start)
-    x1 = int(ratio * word.end)
+    x0 = int(ratio * word.start)  # Access using dot notation
+    x1 = int(ratio * word.end)    # Access using dot notation
     print(f"{word.label} ({word.score:.2f}): {x0 / sample_rate:.3f} - {x1 / sample_rate:.3f} sec")
+
+    # Extract the audio segment
     segment = waveform[:, x0:x1]
-    sd.play(segment, samplerate=sample_rate)
-    sd.wait()  # 
+
+    # Downmix to mono if necessary
+    if segment.size(0) > 1:
+        segment = segment.mean(dim=0)
+
+    # Play the audio segment
+    sd.play(segment.numpy(), samplerate=sample_rate)
+    sd.wait()  # Wait for playback to finish

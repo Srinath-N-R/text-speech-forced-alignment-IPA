@@ -1,7 +1,7 @@
 import torch
 import matplotlib.pyplot as plt
 
-from aligner import NewAligner
+from aligner import NewAligner, get_trellis, constrained_viterbi_alignment, merge_repeats
 from dataloader import CustomDataset
 from plot_utils import (
     plot_emission,
@@ -32,7 +32,7 @@ aligner = NewAligner()
 # Process the data
 print("Generating emissions...")
 inputs = aligner.processor(
-    waveform, 
+    waveform.squeeze(0).numpy(), 
     sampling_rate=aligner.sampling_rate, 
     return_tensors="pt", 
     padding=True
@@ -46,11 +46,11 @@ token_ids = [aligner.tokenizer.convert_tokens_to_ids(p) for p in phonemes]
 tokens = torch.tensor(token_ids).to(aligner._device)
 
 # Generate trellis
-trellis = aligner.get_trellis(emission, tokens)
+trellis = get_trellis(emission, tokens)
 
 # Perform alignment
-path = aligner.constrained_viterbi_alignment(emission, tokens)
-segments = aligner.merge_repeats(path, phonemes)
+path = constrained_viterbi_alignment(emission, tokens)
+segments = merge_repeats(path, phonemes)
 ratio = waveform.size(1) / trellis.size(0)
 word_segments = [
     {
@@ -64,25 +64,25 @@ word_segments = [
 
 # Visualizations
 print("Plotting visualizations...")
-plt.figure(figsize=(10, 6))
 
 # Plot the emission probabilities
-plt.subplot(2, 2, 1)
+plt.figure(figsize=(10, 6))
 plot_emission(emission)
+plt.show()
 
 # Plot the trellis
-plt.subplot(2, 2, 2)
+plt.figure(figsize=(10, 6))
 plot_trellis(trellis)
+plt.show()
 
 # Plot the trellis with path
-plt.subplot(2, 2, 3)
+plt.figure(figsize=(10, 6))
 plot_trellis_with_path(trellis, path)
+plt.show()
 
 # Plot the alignments
-plt.subplot(2, 2, 4)
+plt.figure(figsize=(10, 6))
 plot_alignments(trellis, segments, word_segments, waveform.squeeze(), aligner.sampling_rate)
-
-plt.tight_layout()
 plt.show()
 
 # Play a segment of the waveform
