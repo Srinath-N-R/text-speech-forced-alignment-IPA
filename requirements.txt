@@ -1,0 +1,13 @@
+datasets
+transformers
+evaluate
+librosa
+torch
+torchaudio
+tqdm
+pathlib
+matplotlib
+wandb
+jiwer
+mpi4py
+deepspeed
