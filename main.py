@@ -8,7 +8,6 @@ from pathlib import Path
 from dataloader import CustomDataset
 from aligner import NewAligner
 
-# Define your dataset folder and emissions folder paths
 
 # DATASET should be in this format.
 # Phonemized should contain phonemes of transcription in IPA symbols.
