@@ -9,6 +9,13 @@ from dataloader import CustomDataset
 from aligner import NewAligner
 
 # Define your dataset folder and emissions folder paths
+
+# DATASET should be in this format.
+# Phonemized should contain phonemes of transcription in IPA symbols.
+# ├── VCTK_train/
+# │   ├── wav/            # Audio files (.wav)
+# │   ├── phonemized/     # Phoneme files (.txt)
+
 dataset_folder = "/Users/srinathramalingam/Downloads/dataset_new/VCTK_train"
 dataset = CustomDataset(dataset_folder)
 
