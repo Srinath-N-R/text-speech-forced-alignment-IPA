@@ -24,8 +24,7 @@ This project demonstrates forced alignment using Wav2Vec2 for aligning phoneme s
 ├── aligner.py          # Core alignment logic
 ├── dataloader.py       # Dataset handling
 ├── main.py             # Main script
-```plaintext
-
+```
 
 **## Dataset Format**
 wav/: Audio files in .wav format.
@@ -35,8 +34,8 @@ dataset/
 ├── wav/
 ├── phonemized/
 
-**## Output**
+**Output**
 Aligned segments are saved as JSON in the segments/ folder.
 
-**## Example Command**
+**Example Command**
 python main.py --config config.yaml
