@@ -2,10 +2,6 @@
 
 This project demonstrates forced alignment using Wav2Vec2 for aligning phoneme sequences to audio data. It is designed for researchers, linguists, and developers who work with speech processing and phoneme alignment.
 
-![Diagram 2](https://github.com/user-attachments/assets/1394b542-a641-40db-a70f-806046cb8bf2)
-![Diagram 1](https://github.com/user-attachments/assets/08b7af28-9543-4905-b3ab-181091c879d1)
-
-
 ---
 
 ## Features
@@ -105,3 +101,8 @@ python visualize_data.py
 ```
 
 ---
+
+
+![Diagram 2](https://github.com/user-attachments/assets/1394b542-a641-40db-a70f-806046cb8bf2)
+![Diagram 1](https://github.com/user-attachments/assets/08b7af28-9543-4905-b3ab-181091c879d1)
+
